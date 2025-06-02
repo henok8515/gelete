@@ -14,12 +14,12 @@ function Login({ setCuser }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     setNameError("");
     setPasswordError("");
-  
+
     let hasError = false;
-  
+
     if (!name) {
       setNameError("Name is required");
       hasError = true;
@@ -28,19 +28,20 @@ function Login({ setCuser }) {
       setPasswordError("Password is required");
       hasError = true;
     }
-  
+
     if (hasError) return;
-  
-    axios.post("https://final-stock-backend.onrender.com", { name, password })
-      .then(result => {
+
+    axios
+      .post("https://yabu-backend-1.onrender.com", { name, password })
+      .then((result) => {
         const response = result.data;
-          if (response.message === "Login successful") {
-          const userData = response.user; 
+        if (response.message === "Login successful") {
+          const userData = response.user;
           const token = response.token;
-            localStorage.setItem('currentUser', JSON.stringify(userData));
-          localStorage.setItem('token', token); 
+          localStorage.setItem("currentUser", JSON.stringify(userData));
+          localStorage.setItem("token", token);
           setCuser(userData);
-            switch (userData.role) {
+          switch (userData.role) {
             case "Admin":
               navigate("/admin/admin-dashboard");
               break;
@@ -63,7 +64,7 @@ function Login({ setCuser }) {
           }
         }
       })
-      .catch(err => {
+      .catch((err) => {
         if (err.response) {
           if (err.response.status === 401) {
             setPasswordError("Incorrect password");
@@ -92,7 +93,10 @@ function Login({ setCuser }) {
         <form onSubmit={handleSubmit}>
           {/* Name Field */}
           <div className="mb-6">
-            <label htmlFor="name" className="block mb-2 text-sm text-gray-300 dark:text-gray-300">
+            <label
+              htmlFor="name"
+              className="block mb-2 text-sm text-gray-300 dark:text-gray-300"
+            >
               Username
             </label>
             <input
@@ -110,7 +114,10 @@ function Login({ setCuser }) {
 
           {/* Password Field */}
           <div className="mb-6 relative">
-            <label htmlFor="password" className="block mb-2 text-sm text-gray-300 dark:text-gray-300">
+            <label
+              htmlFor="password"
+              className="block mb-2 text-sm text-gray-300 dark:text-gray-300"
+            >
               Password
             </label>
             <div className="relative">
@@ -126,10 +133,12 @@ function Login({ setCuser }) {
               />
               <div
                 onClick={() => setShowPassword(!showPassword)}
-                onMouseEnter={() => setTooltip(showPassword ? "Hide Password" : "Show Password")}
+                onMouseEnter={() =>
+                  setTooltip(showPassword ? "Hide Password" : "Show Password")
+                }
                 onMouseLeave={() => setTooltip("")}
                 className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
-                style={{ height: '100%' }}
+                style={{ height: "100%" }}
               >
                 {showPassword ? (
                   <FaEyeSlash className="w-5 h-5 text-gray-400 dark:text-gray-400" />
